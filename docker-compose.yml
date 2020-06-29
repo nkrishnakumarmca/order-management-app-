@@ -1,0 +1,53 @@
+version: "3.6"
+services:
+  mongo-service:
+    image: 'mongo'
+    networks:
+      - foot-app-nw
+    container_name: 'my-mongo'
+    environment:
+        MONGO_INITDB_DATABASE: order
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+        - ./init-mongo.js:/docker-entrypoint-initdb.d/initdb.d/init-mongo.js:ro
+        - /tmp:/data/db
+    ports:
+        - 27017:27017
+
+# APP Flippy api service
+  spring-boot-order-api-service:
+    container_name: 'order-api'
+    image: order-api-service
+    networks:
+      - foot-app-nw
+    ports:
+        - 8080:8080
+    depends_on:
+        - mongo-service
+
+  # APP Shop api service
+  spring-boot-shop-api-service:
+    container_name: 'shop-api'
+    image: shop-api-service
+    networks:
+      - foot-app-nw
+    ports:
+      - 8081:8080
+    depends_on:
+      - mongo-service
+
+  # APP agent api service
+  spring-boot-delivery-api-service:
+    container_name: 'agent-api'
+    image: delivery-api-service
+    networks:
+      - foot-app-nw
+    ports:
+      - 8082:8080
+    depends_on:
+      - mongo-service
+networks:
+  foot-app-nw:
+    name: foot-app-nw
+
