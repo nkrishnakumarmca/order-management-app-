@@ -1,17 +1,24 @@
 spring:
   data:
     mongodb:
-      authentication-database: admin
-      username: root
-      password: root
+      #authentication-database: admin
+      #username: root
+      #password: root
       database: order
       port: 27017
-      host: my-mongo
+      host: localhost
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:2181
-      group-id: simple-consumer
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#  kafka:
+#    consumer:
+#      bootstrap-servers: localhost:2181
+#      group-id: simple-consumer
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.
+server:
+  port: 8081

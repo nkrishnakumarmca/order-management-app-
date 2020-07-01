@@ -5,6 +5,8 @@ import com.kk.api.exception.OrderNotFound;
 import com.kk.api.kafka.Producer;
 import com.kk.api.repository.CustomerOrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +19,19 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     private final CustomerOrderRepository customerOrderRepository;
 
-    private final Producer producer;
+    //private final Producer producer;
+    private final RabbitTemplate rabbitTemplate;
+
+    private final Exchange exchange;
 
 
     @Override
     public String makeOrder(Order order) {
         Order orderDetails = customerOrderRepository.save(order);
         //this.producer.send(orderDetails.getOrderId());
+        String routingKey = "customer.created";
+        String message = "customer created";
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, message);
         return orderDetails.getOrderId();
     }
 
