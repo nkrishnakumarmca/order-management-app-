@@ -15,6 +15,17 @@ services:
     ports:
         - 27017:27017
 
+  rabbitmq-service:
+    container_name: 'my-rabbitmq'
+    image: "rabbitmq:3-management"
+    networks:
+      - foot-app-nw
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - 'rabbitmq_data:/data'
+
 # APP Flippy api service
   spring-boot-order-api-service:
     container_name: 'order-api'
@@ -22,9 +33,10 @@ services:
     networks:
       - foot-app-nw
     ports:
-        - 8080:8080
+      - 8080:8080
     depends_on:
-        - mongo-service
+      - mongo-service
+      - rabbitmq-service
 
   # APP Shop api service
   spring-boot-shop-api-service:
@@ -36,6 +48,7 @@ services:
       - 8081:8080
     depends_on:
       - mongo-service
+      - rabbitmq-service
 
   # APP agent api service
   spring-boot-delivery-api-service:
@@ -47,6 +60,10 @@ services:
       - 8082:8080
     depends_on:
       - mongo-service
+      - rabbitmq-service
+volumes:
+  rabbitmq_data:
+
 networks:
   foot-app-nw:
     name: foot-app-nw

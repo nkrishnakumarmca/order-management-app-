@@ -1,20 +1,20 @@
 spring:
   data:
     mongodb:
-      #authentication-database: admin
-      #username: root
-      #password: root
+      authentication-database: admin
+      username: root
+      password: root
       database: order
       port: 27017
-      host: localhost
+      host: my-mongo
   rabbitmq:
-      host: localhost
-      port: 5672
-      username: guest
-      password: guest
+    host: my-rabbitmq
+    port: 5672
+    username: guest
+    password: guest
 
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  #kafka:
+   # producer:
+    #  bootstrap-servers: localhost:9092
+    #key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    #value-serializer: org.apache.kafka.common.serialization.StringSerializer
